@@ -1,34 +1,60 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
 
+import TodoData from "./components/todo/todo-data"
+import TodoNew from "./components/todo/todo-new"
+import "./components/todo/todo.css"
+import reactLogo from "./assets/react.svg"
+import { useState } from "react"
+import "./styles/global.css"
 function App() {
-  const [count, setCount] = useState(0)
+
+
+  const [TodoList, SetTodoList] = useState([
+
+
+  ])
+  const addNewTodo = (name) => {
+    const newTodo = {
+      id: randomIntFromInterval(1, 100000), name: name
+    }
+    SetTodoList([...TodoList, newTodo])
+  }
+
+  const deleteItemTodo = (id) => {
+    const itemDelete = TodoList.filter((item) =>
+      item.id !== id
+    )
+    console.log("itemDelete", itemDelete)
+    return SetTodoList(itemDelete)
+
+  }
+  function randomIntFromInterval(min, max) { // min and max included 
+    return Math.floor(Math.random() * (max - min + 1) + min);
+  }
+
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <div className="Todo-Container">
+        <div className="Todo-Title">Todo List</div>
+        <TodoNew
+          addNewTodo={addNewTodo}
+
+        />
+        {TodoList.length > 0 ?
+          <TodoData
+            TodoList={TodoList}
+            deleteItemTodo={deleteItemTodo}
+          />
+
+          :
+          <div className="Todo-img">
+            <img src={reactLogo} className="logo" />
+          </div>
+        }
       </div>
-      <h1>Hello World</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+
     </>
+
   )
 }
 
